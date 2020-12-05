@@ -6,12 +6,13 @@ errs = ["Program exit.", "You say too many 啊!", "Too many 怎么样呢 is kill
 
 def execute(filename):
     f = open(filename, "r")
-    return errs[run(f.read())]
+    r = errs[run(f.read())]
     f.close()
+    return r
 
 
 def run(code):
-    code = cleanup(list(code))
+    code = cleanup(code)
     posmap = buildposmap(code)
     if posmap == -1:
         return 4
@@ -71,3 +72,10 @@ def buildposmap(code):
         return posmap
     else:
         return -1
+
+
+def cleanup(code):
+    code = code.replace('\n', '')
+    code = code.replace(' ', '')
+    code = code.split(",")
+    return code
