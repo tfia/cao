@@ -31,3 +31,5 @@ def run(code):
 
         if command == "欸怎么样呢":
             cells[cellspointer] -= 1
+            if cells[cellspointer] < 0:
+                return 3
