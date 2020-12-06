@@ -1,11 +1,11 @@
 import sys
 import getch
 
-errs = ["Program exit.", "You say too many 啊!", "Too many 怎么样呢 is killing the sheep!", "Too many 欸怎么样呢 is killing the sheep!", "我们说 and 是吧 do not match!"]
+errs = ["Program exit.", "You say too many 啊!", "我们说 and 是吧 do not match!"]
 
 
 def execute(filename):
-    f = open(filename, "r")
+    f = open(filename, "r", encoding='UTF-8')
     r = errs[run(f.read())]
     f.close()
     return r
@@ -15,29 +15,26 @@ def run(code):
     code = cleanup(code)
     posmap = buildposmap(code)
     if posmap == -1:
-        return 4
+        return 2
     cells, codepointer, cellspointer = [0], 0, 0
-    while codepointer <= len(code):
+
+    while codepointer < len(code):
         command = code[codepointer]
         if command == "欸":
             cellspointer += 1
-            if cellspointer == len(code):
+            if cellspointer == len(cells):
                 cells.append(0)
 
         if command == "啊":
-            cellspointer -= 1
             if cellspointer < 0:
                 return 1
+            cellspointer -= 1
 
         if command == "怎么样呢":
-            cells[cellspointer] += 1
-            if cells[cellspointer] > 256:
-                return 2
+            cells[cellspointer] = cells[cellspointer] + 1 if cells[cellspointer] < 255 else 0
 
         if command == "欸怎么样呢":
-            cells[cellspointer] -= 1
-            if cells[cellspointer] < 0:
-                return 3
+            cells[cellspointer] = cells[cellspointer] - 1 if cells[cellspointer] > 0 else 255
 
         if command == "有一个成语叫":
             sys.stdout.write(chr(cells[cellspointer]))
@@ -60,7 +57,7 @@ def run(code):
 
 
 def buildposmap(code):
-    tempstack, posmap = [], []
+    tempstack, posmap = [], {}
     for pos, command in enumerate(code):
         if command == "我们说":
             tempstack.append(pos)
@@ -75,7 +72,27 @@ def buildposmap(code):
 
 
 def cleanup(code):
+    for i in range(0,len(code)):
+        if code[i] == "*":
+            while True:
+                code[i] = " "
+                i += 1
+                if code[i] == "/":
+                    code[i] = " "
+                    break
     code = code.replace('\n', '')
     code = code.replace(' ', '')
+    code = code.replace('   ', '')
     code = code.split(",")
     return code
+
+def main():
+    if len(sys.argv) == 2:
+        execute(sys.argv[1])
+    else:
+        print("Cao Script on Python, Dec 6 2020")
+        print("Usage: python", sys.argv[0], "filename")
+
+
+if __name__ == '__main__':
+    main()
