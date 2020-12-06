@@ -49,7 +49,7 @@ def run(code):
         if command == "是吧" and cells[cellspointer] != 0:
             codepointer = posmap[codepointer]
 
-        if command == "啊嗯":
+        if command == "啊嗯" and cells[cellspointer] == 0:
             return 0
 
         codepointer += 1
