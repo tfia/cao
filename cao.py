@@ -1,7 +1,7 @@
 import sys
 import getch
 
-errs = ["Program exit.", "You say too many 啊!", "我们说 and 是吧 do not match!"]
+errs = ["\n\nProgram exited.", "\n\nError: You say too many 啊!", "\n\nError: 我们说 and 是吧 do not match!"]
 
 
 def execute(filename):
@@ -17,8 +17,9 @@ def run(code):
     if posmap == -1:
         return 2
     cells, codepointer, cellspointer = [0], 0, 0
+    l = len(code)
 
-    while codepointer < len(code):
+    while codepointer < l:
         command = code[codepointer]
         if command == "欸":
             cellspointer += 1
@@ -72,23 +73,31 @@ def buildposmap(code):
 
 
 def cleanup(code):
-    for i in range(0,len(code)):
-        if code[i] == "*":
-            while True:
-                code[i] = " "
-                i += 1
-                if code[i] == "/":
-                    code[i] = " "
-                    break
+    i = 0
     code = code.replace('\n', '')
     code = code.replace(' ', '')
     code = code.replace('   ', '')
+    tmp = list(code)
+    l = len(tmp)
+    while i < l:
+        if tmp[i] == "/" and tmp[i+1] == "*":
+            while True:
+                if tmp[i] == "*" and tmp[i+1] == "/":
+                    tmp[i] = " "
+                    tmp[i+1] = " "
+                    i += 1
+                    break
+                tmp[i] = " "
+                i += 1
+        i += 1
+    code = ''.join(tmp)
     code = code.split(",")
     return code
 
+
 def main():
     if len(sys.argv) == 2:
-        execute(sys.argv[1])
+        print(execute(sys.argv[1]))
     else:
         print("Cao Script on Python, Dec 6 2020")
         print("Usage: python", sys.argv[0], "filename")
