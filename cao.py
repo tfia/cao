@@ -99,7 +99,7 @@ def main():
     if len(sys.argv) == 2:
         print(execute(sys.argv[1]))
     else:
-        print("Cao Script on Python, Dec 6 2020")
+        print("Cao Script on Python by RHDu, Dec 6 2020")
         print("Usage: python", sys.argv[0], "filename")
 
 
