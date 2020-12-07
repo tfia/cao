@@ -34,7 +34,7 @@ def run(code):
         if command == "怎么样呢":
             cells[cellspointer] = cells[cellspointer] + 1 if cells[cellspointer] < 255 else 0
 
-        if command == "欸怎么样呢":
+        if command == "那么怎么":
             cells[cellspointer] = cells[cellspointer] - 1 if cells[cellspointer] > 0 else 255
 
         if command == "有一个成语叫":
